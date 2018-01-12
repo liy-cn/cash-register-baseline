@@ -14,10 +14,11 @@ public class CashRegisterTest {
     //initialize CashRegister and fake Printer
     PrinterMock printer = new PrinterMock();
     CashRegister cashRegister = new CashRegister(printer);
-    Purchase purchase = new PurchaseStub(null);
+    Item[] items = new Item[]{};
+    Purchase purchase = new Purchase(items);
     cashRegister.process(purchase);
 
-    Assert.assertEquals(true, printer.verifyCall());
+    Assert.assertEquals(1, printer.getInvokeCounter());
     //verify that printer was called
   }
 
@@ -27,16 +28,19 @@ public class CashRegisterTest {
     PrinterMock printer = new PrinterMock();
     CashRegister cashRegister = new CashRegister(printer);
     List<Item> list = new ArrayList<Item>();
+    String out = "";
     for (int i = 0; i < 10; i++) {
       Item item = new Item("item" + i, i);
       list.add(item);
+      out += item.getName() + "\t" + item.getPrice() + "\n";
     }
+
     Item[] items = list.toArray(new Item[list.size()]);
     Purchase purchase = new Purchase(items);
     cashRegister.process(purchase);
 
-    Assert.assertEquals(true, printer.verifyCall());
-    //verify that printer was called
+    Assert.assertEquals(out,printer.getPrintMessage());
+    //verify that printMessage is equal to items string.
   }
 
   @Test
@@ -53,8 +57,31 @@ public class CashRegisterTest {
     Purchase purchase = new PurchaseStub(items);
     cashRegister.process(purchase);
 
-    Assert.assertEquals("this is a test.", purchase.asString()); //FIXME 用打印机的方法来验证
+    Assert.assertEquals("this is a test.", printer.getPrintMessage());
 
-    //verify that printer was called
+    //verify the PurchaseStub
   }
+
+
+  @Test
+  public void should_invoke_counter_is_same_with_print_counter() {
+    //initialize CashRegister and fake Printer
+    PrinterMock printer = new PrinterMock();
+    CashRegister cashRegister = new CashRegister(printer);
+    List<Item> list = new ArrayList<Item>();
+    for (int i = 0; i < 10; i++) {
+      Item item = new Item("item" + i, i);
+      list.add(item);
+    }
+    Item[] items = list.toArray(new Item[list.size()]);
+    Purchase purchase = new Purchase(items);
+    cashRegister.process(purchase);
+    cashRegister.process(purchase);
+    cashRegister.process(purchase);
+
+    Assert.assertEquals(3, printer.getInvokeCounter());
+
+    //verify that printer's counter is the same with process invoked times.
+  }
+
 }

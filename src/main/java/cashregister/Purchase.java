@@ -4,8 +4,6 @@ public class Purchase {
 
     private Item[] items;
 
-    private boolean callFlag = false;
-
     public Purchase(Item[] items) {
 
         this.items = items;
@@ -21,11 +19,4 @@ public class Purchase {
         return out;
     }
 
-    public boolean isCallFlag() {
-        return callFlag;
-    }
-
-    public void setCallFlag(boolean callFlag) {
-        this.callFlag = callFlag;
-    }
 }

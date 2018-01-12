@@ -4,17 +4,22 @@ package cashregister;
  * Created by liyue on 2018/1/12
  */
 public class PrinterMock extends Printer {
-  private boolean callFlag = false;
+  private int invokeCounter = 0;
+  private String printMessage;
 
   @Override
   public void print(String printThis) {
+    this.printMessage = printThis;
     System.out.println("Printer: \n" + printThis);
-    this.callFlag = true;
+    invokeCounter ++;
   }
 
-  public boolean verifyCall() {
-    return callFlag;
+  public int getInvokeCounter() {
+    return invokeCounter;
   }
 
+  public String getPrintMessage(){
+    return this.printMessage;
+  }
 
 }
