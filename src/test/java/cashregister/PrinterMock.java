@@ -3,7 +3,7 @@ package cashregister;
 /**
  * Created by liyue on 2018/1/12
  */
-public class PrinterMock extends Printer{
+public class PrinterMock extends Printer {
   private boolean callFlag = false;
 
   @Override
@@ -15,5 +15,6 @@ public class PrinterMock extends Printer{
   public boolean verifyCall() {
     return callFlag;
   }
+
 
 }
